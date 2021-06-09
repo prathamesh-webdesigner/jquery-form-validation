@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Form validation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center text-warning">JQuery Form Validation</h1>
+        <div class="col-lg-8 m-auto d-block">
+            <form action="demo.php">
+                <div class="form-group">
+                    <label for="user">UserName:</label>
+                    <input type="text" name="username" id="username" class="form-control" autocomplete="off">
+                    <small id="usercheck"></small>
+                </div>
+                <div class="form-group">
+                    <label for="user">Email Id:</label>
+                    <input type="email" name="email" id="email" class="form-control" autocomplete="off">
+                    <small id="emailcheck"></small>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="pass" id="password" class="form-control">
+                    <small id="passcheck"></small>
+                </div>
+                <div class="form-group">
+                    <label for="conpassword">Confirm Password:</label>
+                    <input type="password" name="conpassword" id="conpassword" class="form-control">
+                    <small id="conpasscheck"></small>
+                    <small id="conpasscheckSuccess"></small>
+                </div>
+                <input type="submit" name="" id="submitbtn" value="Submit" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#usercheck').hide();
+            $('#passcheck').hide();
+            $('#conpasscheck').hide();
+            $('#emailcheck').hide();
+            $('#conpasscheckSuccess').hide();
+
+            var user_err = true;
+            var pass_err = true;
+            var conpass_err = true;
+            var email_err = true;
+            //Validation for UserName
+            $('#username').keyup(function () {
+                username_check();
+            });
+            function username_check() {
+                var user_val = $('#username').val();
+                if (user_val.length == '') {
+                    $('#usercheck').show();
+                    $('#usercheck').html('** Please fill the User Name');
+                    $('#usercheck').css('color', 'red');
+                    $('#usercheck').focus();
+                    user_err = false;
+                    return false;
+                }
+                else {
+                    $('#usercheck').hide();
+                }
+                if ((user_val.length <= 3) || (user_val.length >= 15)) {
+                    $('#usercheck').show();
+                    $('#usercheck').html('**Username length must be between min 3 and max 15');
+                    $('#usercheck').css('color', 'red');
+                    $('#usercheck').focus();
+                    user_err = false;
+                    return false;
+                }
+                else {
+                    $('#usercheck').hide();
+                }
+
+            }
+            //Validation for UserName end here
+            //Validation for Password
+            $('#password').keyup(function () {
+                password_check();
+            });
+            function password_check() {
+                var passwordStore = $('#password').val();
+                if (passwordStore.length == '') {
+                    $('#passcheck').show();
+                    $('#passcheck').html('** Please fill the User Password');
+                    $('#passcheck').css('color', 'red');
+                    $('#passcheck').focus();
+                    pass_err = false;
+                    return false;
+                }
+                else {
+                    $('#passcheck').hide();
+                }
+                if ((passwordStore.length <= 3) || (passwordStore.length >= 20)) {
+                    $('#passcheck').show();
+                    $('#passcheck').html('**Password length must be between min 3 and max 20');
+                    $('#passcheck').css('color', 'red');
+                    $('#passcheck').focus();
+                    pass_err = false;
+                    return false;
+                }
+                else {
+                    $('#passcheck').hide();
+                }
+            }
+            //Validation for Password end here
+            //Validation for Confirm Password
+            $('#conpassword').keyup(function () {
+                confirmPass();
+            });
+            function confirmPass() {
+                var passwordStore = $('#password').val();
+                var confirmpassStore = $('#conpassword').val();
+
+                if (passwordStore != confirmpassStore) {
+                    $('#conpasscheck').show();
+                    $('#conpasscheck').html('**Password is Not matching');
+                    $('#conpasscheck').css('color', 'red');
+                    $('#conpasscheck').focus();
+                    $('#conpasscheckSuccess').hide();
+                    conpass_err = false;
+                    return false;
+                }
+                else {
+                    $('#conpasscheck').hide();
+                    $('#conpasscheckSuccess').show();
+                    $('#conpasscheckSuccess').html('&#10003; Password matched');
+                    $('#conpasscheckSuccess').css('color', 'green');
+                }
+            }
+            //Validation for Confirm Password end here
+            //Validation for email
+            $('#email').keyup(function () {
+                confirmEmail();
+            });
+
+            function confirmEmail() {
+                var emailvalStore = $('#email').val();
+
+                if (emailvalStore.length == '') {
+                    $('#emailcheck').show();
+                    $('#emailcheck').html('** Please fill the email ID');
+                    $('#emailcheck').css('color', 'red');
+                    $('#emailcheck').focus();
+                    email_err = false;
+                    return false;
+                }
+                else {
+                    $('#emailcheck').hide();
+                }
+            }
+            //Validation for email end here
+            //Validation for Submission
+            $('#submitbtn').click(function () {
+                user_err = true;
+                pass_err = true;
+                conpass_err = true;
+                email_err = true;
+
+                username_check();
+                password_check();
+                confirmPass();
+                confirmEmail();
+
+                if ((user_err == true) && (pass_err == true) && (conpass_err == true) && (email_err == true)) {
+                    return true;
+                }
+                else {
+                    $('#username').css('border', '1px solid red');
+                    $('#password').css('border', '1px solid red');
+                    $('#conpassword').css('border', '1px solid red');
+                    $('#email').css('border', '1px solid red');
+                    $('#conpasscheckSuccess').hide();
+                    return false;
+
+                }
+            });
+            
+        });
+    </script>
+</body>
+
+</html>
